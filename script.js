@@ -13,14 +13,14 @@ const answerIput = document.getElementById("answer-input")
 //Options values for buttons
 let options = {
   exercises: [
-    { image: "./images/tasks/first.jpg", answer: "1" },
-    { image: "./images/tasks/second.jpg", answer: "2" },
-    { image: "./images/tasks/third.jpg", answer: "3" },
-    { image: "./images/tasks/fourth.jpg", answer: "4" },
-    { image: "./images/tasks/fifth.jpg", answer: "5" },
-    { image: "./images/tasks/sixth.jpg", answer: "6" },
-    { image: "./images/tasks/seventh.jpg", answer: "7" },
-    { image: "./images/tasks/eighth.jpg", answer: "8" },
+    { image: "./images/tasks/first.jpg", answer: "0.21" },
+    { image: "./images/tasks/second.jpg", answer: "xsinx" },
+    { image: "./images/tasks/third.jpg", answer: "1/3" },
+    { image: "./images/tasks/fourth.jpg", answer: "1/3" },
+    { image: "./images/tasks/fifth.jpg", answer: "1/3" },
+    { image: "./images/tasks/sixth.jpg", answer: "-inf" },
+    { image: "./images/tasks/seventh.jpg", answer: "1/2" },
+    { image: "./images/tasks/eighth.jpg", answer: "2 - 2/e" },
   ],
 
 };
@@ -66,38 +66,74 @@ const generateWord = (category) => {
   }
 };
 
-const initializer2 = async () => {
+const initializer2 = () => {
   winCount = 0;
   count = 0;
 
   newGameContainer.classList.add("hide");
   imageCalc.innerHTML = "";
+  imageCalc.classList.remove("hide");
 
   const exercises = options.exercises;
   const answerInput = document.getElementById("answer-input");
 
   let { initialDrawing } = canvasCreator();
-  //initialDrawing would draw the frame
+  // initialDrawing would draw the frame
   initialDrawing();
 
-  for (let i = 0; i < exercises.length; i++) {
-    // Change the image
-    imageCalc.innerHTML = `<img src="${exercises[i].image}" alt="exercise" class="exercise-image">`;
+  // Define a recursive function for handling each exercise
+  const handleExercise = async (index) => {
+    if (index < exercises.length) {
+      // Change the image
+      imageCalc.innerHTML = `<img src="${exercises[index].image}" alt="exercise" class="exercise-image">`;
 
-    // Clear previous input
-    answerInput.value = "";
+      // Clear previous input
+      answerInput.value = "";
 
-    // Await user input
-    await waitForEnterKey();
+      // Await user input
+      await waitForEnterKey();
 
-    // Handle the user input
-    const userInput = answerInput.value.trim();
-    console.log("User input:", userInput);
+      // Handle the user input
+      const userInput = answerInput.value.trim();
+      lose = process_user_input(userInput, index);
+
+      // Move to the next exercise after a short delay
+      setTimeout(() => handleExercise(index + 1), 100);
+
+      if (lose) {
+        return;
+      }
+
+    } else {
+      // Display the result after completing all exercises
+      resultText.innerHTML = `<h2 class='win-msg'>Молодець!</h2>`;
+      newGameContainer.classList.remove("hide");
+    }
+  };
+
+  // Start handling exercises
+  handleExercise(0);
+};
+
+const process_user_input = (user_input, number) => {
+  if (user_input === options.exercises[number].answer) {
+    winCount += 1;
+  } else {
+    count += 2;
+    for (let i = 0; i <= count; i++) {
+      drawMan(i);
+    }
+    if (count == 6) {
+      resultText.innerHTML = `<h2 class='lose-msg'>Нечемний(а)!</h2>`;
+      imageCalc.classList.add("hide");
+      newGameContainer.classList.remove("hide");
+      count = 0;
+      return False;
+    }
   }
 
-  // All images processed, do any final tasks here
-  console.log("All images processed");
-};
+}
+
 
 // Function to wait for Enter key press
 const waitForEnterKey = () => {
@@ -116,27 +152,12 @@ const waitForEnterKey = () => {
 };
 
 
-// Function to handle user input
-const handleUserInput = (event) => {
-  const userInput = event.target.value;
-
-  // Handle the user input (you can replace this with your logic)
-  if (userInput) {
-    console.log("User input:", userInput);
-    // Further logic based on user input
-  } else {
-    console.log("User input is empty");
-    // Handle the case where the user enters an empty value
-  }
-};
 
 //Initial Function (Called when page loads/user presses new game)
 const initializer = () => {
   winCount = 0;
   count = 0;
 
-  
-    
   
 
 
@@ -284,5 +305,5 @@ const drawMan = (count) => {
 };
 
 //New Game
-newGameButton.addEventListener("click", initializer);
+newGameButton.addEventListener("click", initializer2);
 window.onload = initializer2;
