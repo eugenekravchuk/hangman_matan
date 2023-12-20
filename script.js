@@ -7,25 +7,22 @@ const newGameButton = document.getElementById("new-game-button");
 const canvas = document.getElementById("canvas");
 const resultText = document.getElementById("result-text");
 
+const imageCalc = document.getElementById("calc-exercise")
+const answerIput = document.getElementById("answer-input")
+
 //Options values for buttons
 let options = {
-  fruits: [
-    "Apple",
-    "Blueberry",
-    "Mandarin",
-    "Pineapple",
-    "Pomegranate",
-    "Watermelon",
+  exercises: [
+    { image: "./images/tasks/first.jpg", answer: "1" },
+    { image: "./images/tasks/second.jpg", answer: "2" },
+    { image: "./images/tasks/third.jpg", answer: "3" },
+    { image: "./images/tasks/fourth.jpg", answer: "4" },
+    { image: "./images/tasks/fifth.jpg", answer: "5" },
+    { image: "./images/tasks/sixth.jpg", answer: "6" },
+    { image: "./images/tasks/seventh.jpg", answer: "7" },
+    { image: "./images/tasks/eighth.jpg", answer: "8" },
   ],
-  animals: ["Hedgehog", "Rhinoceros", "Squirrel", "Panther", "Walrus", "Zebra"],
-  countries: [
-    "India",
-    "Hungary",
-    "Kyrgyzstan",
-    "Switzerland",
-    "Zimbabwe",
-    "Dominica",
-  ],
+
 };
 
 //count
@@ -69,10 +66,79 @@ const generateWord = (category) => {
   }
 };
 
+const initializer2 = async () => {
+  winCount = 0;
+  count = 0;
+
+  newGameContainer.classList.add("hide");
+  imageCalc.innerHTML = "";
+
+  const exercises = options.exercises;
+  const answerInput = document.getElementById("answer-input");
+
+  let { initialDrawing } = canvasCreator();
+  //initialDrawing would draw the frame
+  initialDrawing();
+
+  for (let i = 0; i < exercises.length; i++) {
+    // Change the image
+    imageCalc.innerHTML = `<img src="${exercises[i].image}" alt="exercise" class="exercise-image">`;
+
+    // Clear previous input
+    answerInput.value = "";
+
+    // Await user input
+    await waitForEnterKey();
+
+    // Handle the user input
+    const userInput = answerInput.value.trim();
+    console.log("User input:", userInput);
+  }
+
+  // All images processed, do any final tasks here
+  console.log("All images processed");
+};
+
+// Function to wait for Enter key press
+const waitForEnterKey = () => {
+  return new Promise((resolve) => {
+    const handleKeyPress = (event) => {
+      if (event.key === "Enter") {
+        // Remove the event listener
+        document.removeEventListener("keypress", handleKeyPress);
+        resolve();
+      }
+    };
+
+    // Add event listener for Enter key press
+    document.addEventListener("keypress", handleKeyPress);
+  });
+};
+
+
+// Function to handle user input
+const handleUserInput = (event) => {
+  const userInput = event.target.value;
+
+  // Handle the user input (you can replace this with your logic)
+  if (userInput) {
+    console.log("User input:", userInput);
+    // Further logic based on user input
+  } else {
+    console.log("User input is empty");
+    // Handle the case where the user enters an empty value
+  }
+};
+
 //Initial Function (Called when page loads/user presses new game)
 const initializer = () => {
   winCount = 0;
   count = 0;
+
+  
+    
+  
+
 
   //Initially erase all content and hide letteres and new game button
   userInputSection.innerHTML = "";
@@ -219,4 +285,4 @@ const drawMan = (count) => {
 
 //New Game
 newGameButton.addEventListener("click", initializer);
-window.onload = initializer;
+window.onload = initializer2;

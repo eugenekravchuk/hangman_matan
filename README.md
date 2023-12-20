@@ -1,2 +1,2 @@
-# hangman-game-js
-A html css JavaScript Hangman Game Project
+# hangman-game-mata
+Simaple game to prepare to calculus exam
