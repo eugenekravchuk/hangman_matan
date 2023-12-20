@@ -5,7 +5,17 @@
   font-family: "Poppins", sans-serif;
 }
 body {
-  background-color: #8c52ff;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url("images/background/dog_burn.jpg");
+  /* background-image: url('your-image-url.jpg'); Replace 'your-image-url.jpg' with the actual URL or path to your image */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; 
+  
 }
 .container {
   font-size: 16px;
@@ -84,8 +94,8 @@ body {
 }
 canvas {
   display: block;
-  margin: auto;
-  border: 10px solid #8c52ff;
+  /* margin: auto; */
+  border: 3px solid #a8179c;
   border-radius: 10px;
 }
 .hide {
@@ -105,7 +115,7 @@ canvas {
 #new-game-button {
   font-size: 1.25em;
   padding: 0.5em 1em;
-  background-color: #8c52ff;
+  background-color: #a8179c;
   border: 3px solid #000000;
   color: #fff;
   border-radius: 0.2em;
@@ -116,4 +126,36 @@ canvas {
 }
 .lose-msg {
   color: #fe5152;
+}
+
+#answer-input {
+  display: flex;
+  color: black ;
+  padding: 8px;
+  border: 3px solid #a8179c;
+  border-radius: 10px;
+  margin-bottom: -20px;
+  font-weight: 700;
+}
+
+#calc-exercise {
+  /* Set the width and height as per your design */
+  width: 300px;
+  height: 150px;
+
+  /* Add some additional styling for positioning and appearance */
+  overflow: hidden; /* Hide overflow if images are larger */
+  border: 1px solid #ccc; /* Add a border for visual clarity */
+  display: flex; /* Use flexbox for centering images */
+  justify-content: center; /* Center images horizontally */
+  align-items: center; /* Center images vertically */
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#calc-exercise img {
+  /* Set images to 100% width to fit the container */
+  width: 80%;
+  height: auto;
+  object-fit: cover;
 }
